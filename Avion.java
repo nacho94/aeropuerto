@@ -51,7 +51,11 @@ public class Avion implements Runnable {
 		return fNumero;
 	}
 
-	private void sleep(int n) {
+	public String getPista() {
+		return fPista;
+	}
+
+ 	private void sleep(int n) {
 		try{
 			Thread.sleep(n);
 		}catch(Exception e) {

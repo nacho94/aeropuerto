@@ -17,7 +17,9 @@ public class Torre implements Runnable {
 	public void run() { 
 		while(true) {
 			Avion a = devolverPrimerAvion();
-			//a.asignarPista(a);
+			String p = decidirPista(a);
+			Main.log("Torre: Avion numero" + a.getNumero() + " puede despegar de pista " + p);
+			a.asignarPista(p);
 		}
 
 	}
@@ -25,10 +27,11 @@ public class Torre implements Runnable {
 	public void notificar(Avion a, boolean despegando) {
 		if(despegando) {
 			Main.log("Avion " + a.getNumero() + " ya despego.");
+
 		}else{
 			Main.log("Avion " + a.getNumero() + " ya aterrizo.");
 		}
-		
+		liberarPista(a);
 	}
 
 	private String decidirPista(Avion a) {
@@ -45,6 +48,12 @@ public class Torre implements Runnable {
 		}
 		return "";
  	}
+
+ 	private void liberarPista(Avion a) {
+ 		fPistas.put(a.getPista(),null);
+ 		fPistasLibres.release();
+ 	}
+
 	public void meterAvionEnCola(Avion a, boolean despegando) {
 		try{
 			q.put(a);
