@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
 
 	public static Random aleatorio = new Random();
-	
+	public static boolean enableDebug = true;
 	public static void main(String[] args) throws InterruptedException {
 		Scanner sc = new Scanner(System.in);
 		int numAviones = sc.nextInt();
@@ -35,4 +35,15 @@ public class Main {
 		hiloTorre.join();		
 	}
 
+	public static void log(String msj) {
+
+		System.out.println(msj);
+	}
+
+	public static void debug(String msj) {
+		if(enableDebug) {
+			System.out.println("Debug: " + msj);
+		}
+		
+	}
 }
