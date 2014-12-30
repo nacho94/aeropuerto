@@ -7,18 +7,20 @@ import java.util.concurrent.Semaphore;
 public class Torre implements Runnable {
 
 	private BlockingQueue <Avion> q = new ArrayBlockingQueue<Avion> (1);
-	private HashMap <String,Avion> fPistas = new HashMap <>();
+	private HashMap <String,Avion> fPistas = new HashMap <String,Avion>();
 	private Semaphore fPistasLibres;
 
-	public void Torre() {
+	public Torre() {
 		fPistasLibres = new Semaphore(2);
+		fPistas.put("V", null);
+		fPistas.put("W", null);
 	}
 
 	public void run() { 
-		while(true) {
+		while(!Thread.interrupted()) {
 			Avion a = devolverPrimerAvion();
 			String p = decidirPista(a);
-			Main.log("Torre: Avion numero" + a.getNumero() + " puede despegar de pista " + p);
+			Main.log("Torre: Avion numero " + a.getNumero() + " puede " +a.queHago() +" de pista " + p);
 			a.asignarPista(p);
 		}
 
@@ -38,15 +40,16 @@ public class Torre implements Runnable {
 		try{
 			fPistasLibres.acquire();
 			for (HashMap.Entry<String,Avion> e : fPistas.entrySet()) {
+				
 	    		if(e.getValue()==null) {
 	    			fPistas.put(e.getKey(),a);
 	    			return e.getKey();
 	    		}
 			}
-		}catch(Exception e) {
-			return "";
+		}catch(Exception ex) {
+			return ex.getMessage();
 		}
-		return "";
+		return "x";
  	}
 
  	private void liberarPista(Avion a) {
